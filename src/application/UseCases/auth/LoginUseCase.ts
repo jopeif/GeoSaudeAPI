@@ -4,11 +4,13 @@ import { UseCase } from "../../UseCase";
 import { AuthRepository } from "../../../domain/repo/AuthRepository";
 import { PasswordHasher } from "../../../infra/utils/passwordHasher/PasswordHasher";
 import { RefreshToken } from "../../../domain/entities/auth/RefreshToken";
+import { UserRepository } from "../../../domain/repo/UserRepository";
 
 export class LoginUseCase implements UseCase<LoginDTOInput, LoginDTOOutput>{
 
     constructor(
         private readonly authRepo:AuthRepository,
+        private readonly userRepo:UserRepository,
         private readonly passwordHasher:PasswordHasher
     ){}
 
@@ -18,7 +20,7 @@ export class LoginUseCase implements UseCase<LoginDTOInput, LoginDTOOutput>{
             //2º: checar se a senha está correta.
             //3ª: criar e retornar os tokens
 
-                const user = await this.authRepo.findByEmail(input.login) ?? await this.authRepo.findByRegistration(input.login)
+                const user = await this.userRepo.findByEmail(input.login) ?? await this.userRepo.findByRegistration(input.login)
 
                 if(!user){
                     return {

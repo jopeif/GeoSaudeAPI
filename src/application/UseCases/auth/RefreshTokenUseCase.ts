@@ -3,9 +3,13 @@ import { AuthRepository } from "../../../domain/repo/AuthRepository";
 import { RefreshTokenDTOInput, RefreshTokenDTOOutput } from "../../DTOs/auth/RefreshTokenDTO";
 import { UseCase } from "../../UseCase";
 import { RefreshToken } from "../../../domain/entities/auth/RefreshToken";
+import { UserRepository } from "../../../domain/repo/UserRepository";
 
 export class RefreshTokenUseCase implements UseCase<RefreshTokenDTOInput, RefreshTokenDTOOutput>{
-    constructor(private readonly authRepo:AuthRepository){}
+    constructor(
+        private readonly authRepo:AuthRepository,
+        private readonly userRepo:UserRepository
+    ){}
 
     async execute(input: RefreshTokenDTOInput): Promise<RefreshTokenDTOOutput> {
         try {
@@ -27,15 +31,22 @@ export class RefreshTokenUseCase implements UseCase<RefreshTokenDTOInput, Refres
                     message:"Refresh Token is not valid."
                 }
             }
-            const user = await this.authRepo.findById(storedToken.userId)
+            const user = await this.userRepo.findById(storedToken.userId)
 
             if(!user){
                 return{
                     success:false,
                     status_code:404,
-                    message:"User with the give Refresh Token does not exist."
+                    message:"User with the given Refresh Token does not exist."
                 }
             }
+            if(user.banned){
+                    return {
+                        success: false,
+                        status_code: 403,
+                        message: "User is banned."
+                    }
+                }
 
             const payload = jwt.verify(storedToken.token, process.env["REFRESH_SECRET"] ?? "")
             

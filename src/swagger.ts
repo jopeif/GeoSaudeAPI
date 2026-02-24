@@ -7,10 +7,24 @@ export const swaggerSpec = swaggerJSDoc({
         title: "GeoSaúde API",
         version: "1.0.0",
         description: "Documentação das rotas",
+        contact:{
+            email:"joaopedrodelimacarlos@gmail.com"
+        }
         },
         servers: [
-        { url: "http://localhost:3000" }
+        { 
+            url: "https://geosaudeapi.onrender.com",
+            description:"Development server",
+        }
         ],
+        "paths":{
+            "/user/agent/register":{},
+            "/user/supervisor/register":{},
+            
+        }
     },
-    apis: ["./src/routes/**/*.ts"],
+    apis: [
+        "./src/routes/auth.routes.ts",
+        "./src/routes/user.routes.ts",
+    ],
 });

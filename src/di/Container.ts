@@ -63,8 +63,8 @@ export class Container{
         const userRepo = new PrismaUserRepository()
         const passwordHasher = new BcryptPasswordHasher()
 
-        const loginUC = new LoginUseCase(authRepo, passwordHasher)
-        const refreshTokenUC = new RefreshTokenUseCase(authRepo)
+        const loginUC = new LoginUseCase(authRepo, userRepo, passwordHasher)
+        const refreshTokenUC = new RefreshTokenUseCase(authRepo, userRepo)
         const meUC = new MeUseCase(userRepo)
         return new AuthController(loginUC, refreshTokenUC, meUC)
     }
