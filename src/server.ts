@@ -1,4 +1,4 @@
-import { swaggerSpec } from './swagger';
+import { swaggerSpec } from './infra/utils/swagger/swagger';
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'

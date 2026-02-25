@@ -42,6 +42,7 @@ export class User<TProps extends UserProps> {
         if (!validator.isEmail(email)) {
             throw new Error("Invalid email.")
         }
+    
     }
 
     public static validatePhoneNumber(phoneNumber: string) {
