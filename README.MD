@@ -56,7 +56,7 @@ src/
 
 ---
 ## 🚀 Instalação
-git clone https://github.com/seu-usuario/geosaude-api.git
+git clone https://github.com/jopeif/GeoSaudeAPI.git
 
 cd geosaude-api
 
