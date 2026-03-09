@@ -231,6 +231,8 @@ router.get("/supervisor", authMiddleware, (req, res)=>container.UserController.f
 router.get("/adm", authMiddleware, (req, res)=>container.UserController.findAllAdmin(req, res))
 router.get("/by-registration/:registration", authMiddleware, (req, res)=>container.UserController.findByRegistration(req, res))
 
+
+
 //===PATCH===
 router.patch("/ban/:id", (req, res)=> container.UserController.banUser(req, res))
 

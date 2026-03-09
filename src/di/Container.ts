@@ -17,6 +17,14 @@ import { FindAllAdminUseCase } from '../application/UseCases/user/get/FindAllAdm
 import { FindAllAgentUseCase } from '../application/UseCases/user/get/FindAllAgentsUseCase';
 import { BanUserUseCase } from '../application/UseCases/user/patch/BanUserUseCase';
 import { MeUseCase } from '../application/UseCases/auth/MeUseCase';
+import { VisitFormController } from '../infra/web/controllers/visitForm.controller';
+import { VisitFormPrismaRepository } from '../infra/db/prisma/Implementation/VisitFormPrismaRepository';
+import { CreateNewVisitUseCase } from '../application/UseCases/visitForm/CreateNewVisitUseCase';
+import { DeleteVisitUseCase } from '../application/UseCases/visitForm/DeleteVisitUseCase';
+import { FindVisitByIdUseCase } from '../application/UseCases/visitForm/FindVisitByIdUseCase';
+import { FindVisitsByUserIdUseCase } from '../application/UseCases/visitForm/FindVisitsByUserIdUseCase';
+import { FindVisitsByZipCodeUseCase } from '../application/UseCases/visitForm/FindVisitsByZipCodeUseCase';
+import { FindVisitsOnDateUseCase } from '../application/UseCases/visitForm/FindVisitsOnDateUseCase';
 
 export class Container{
 
@@ -67,5 +75,28 @@ export class Container{
         const refreshTokenUC = new RefreshTokenUseCase(authRepo, userRepo)
         const meUC = new MeUseCase(userRepo)
         return new AuthController(loginUC, refreshTokenUC, meUC)
+    }
+
+    public get visitFormController(){
+
+        const visitFormRepo = new VisitFormPrismaRepository()
+        const userRepo = new PrismaUserRepository()
+
+        const createNewVisitUC = new CreateNewVisitUseCase(visitFormRepo, userRepo)
+        const deleteVisitUC = new DeleteVisitUseCase(visitFormRepo)
+
+        const findByIdUC = new FindVisitByIdUseCase(visitFormRepo)
+        const findByUserIdUC = new FindVisitsByUserIdUseCase(visitFormRepo, userRepo)
+        const findByZipCodeUC = new FindVisitsByZipCodeUseCase(visitFormRepo)
+        const findOnDateUC = new FindVisitsOnDateUseCase(visitFormRepo)
+
+        return new VisitFormController(
+            createNewVisitUC, 
+            deleteVisitUC,
+            findByIdUC,
+            findByUserIdUC,
+            findByZipCodeUC,
+            findOnDateUC,
+        )
     }
 }

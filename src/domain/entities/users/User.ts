@@ -17,7 +17,6 @@ export class User<TProps extends UserProps> {
         protected readonly props: TProps
     ) {}
 
-    // ===== FUNCTIONALITIES =====
 
     public static roleEnumParse(role: "AGENT" | "SUPERVISOR" | "ADM"): RoleEnum {
         switch (role) {

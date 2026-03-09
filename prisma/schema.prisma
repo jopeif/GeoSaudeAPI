@@ -19,6 +19,51 @@ enum RoleEnum {
   ADM
 }
 
+enum PropertyType {
+  RESIDENTIAL
+  COMMERCIAL
+  VACANT_LOT
+  STRATEGIC_POINT
+  HEALTH_FACILITY
+  SCHOOL
+  OTHER
+}
+
+enum VisitType {
+  ROUTINE
+  RECOVERY
+  LIRAA
+  BLOCKING
+}
+
+enum PendingReason {
+  NONE
+  REFUSED
+  CLOSED
+  ABSENT
+  ABANDONED
+  OTHER
+}
+
+enum DepositType {
+  A1
+  A2
+  B
+  C
+  D1
+  D2
+  E
+}
+
+enum LarvicideType {
+  NONE
+  BTI
+  PYRIPROXYFEN
+  DIFLUBENZURON
+  TEMEPHOS
+  OTHER
+}
+
 model User {
   id           String   @id @default(uuid())
   name         String
@@ -36,6 +81,8 @@ model User {
   registration String?
 
   refreshTokens RefreshToken[]
+
+  visitForms VisitForm[]
 
   // ===== ADMIN =====
   accessLevel Int?
@@ -55,4 +102,59 @@ model RefreshToken {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+model VisitForm {
+  id String @id @default(uuid())
+
+  visitDate     DateTime
+  localityCode  String
+  streetName    String
+  number        String
+  blockSide     String?
+  complement    String?
+  propertyType  PropertyType
+  residentName  String?
+  phone         String?
+  entryTime     String?
+  visitType     VisitType
+  inspected     Boolean
+  pendingReason PendingReason?
+
+  depositsWithFocus  Boolean
+  depositType        DepositType?
+  larvicideUsed      LarvicideType?
+  treatedDeposits    Int
+  eliminatedDeposits Int
+
+  depositsA1 Int
+  depositsA2 Int
+  depositsB  Int
+  depositsC  Int
+  depositsD1 Int
+  depositsD2 Int
+  depositsE  Int
+
+  treatmentApplied       Boolean
+  treatmentLarvicideType LarvicideType?
+  larvicideAmount        Float?
+  perifocalDeposits      Int
+  adulticideLoads        Int
+
+  sampleCollected Boolean
+  sampleCode      String?
+  tubeCount       Int
+
+  notes String?
+
+  latitude  Float?
+  longitude Float?
+
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([visitDate])
 }

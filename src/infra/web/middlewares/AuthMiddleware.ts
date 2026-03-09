@@ -20,6 +20,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
         return;
     }
 
+
     try {
         const payload = jwt.verify(token as string, JWT_SECRET);
         (req as Request & { user?: any }).user = payload;

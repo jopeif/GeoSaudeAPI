@@ -8,6 +8,7 @@ import swaggerUi from "swagger-ui-express";
 
 import AgentRoutes from './infra/web/routes/user.routes'
 import AuthRoutes from './infra/web/routes/auth.routes'
+import VisitFormRoutes from './infra/web/routes/visit.routes'
 
 
 
@@ -32,6 +33,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/auth', AuthRoutes)
 app.use('/user', AgentRoutes)
+app.use('/visit', VisitFormRoutes)
 
 export default app
 
